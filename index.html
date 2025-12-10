@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎄 Christmas Profit Share Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+    --xmas-red: linear-gradient(135deg, #e63946 0%, #d00000 100%);
+    --xmas-green: linear-gradient(135deg, #2d5016 0%, #1b4332 100%);
+    --xmas-gold: linear-gradient(135deg, #f1c453 0%, #f4a261 100%);
+    --xmas-silver: linear-gradient(135deg, #c9d6df 0%, #e8f4fd 100%);
+    --snow-white: rgba(255,255,255,0.9);
+    --dark-night: #0a0f1a;
+    --fir-green: #1a3c34;
+    --glass: rgba(255,255,255,0.15);
+    --glass-border: rgba(255,255,255,0.25);
+    --shadow: 0 30px 60px rgba(0,0,0,0.5);
+    --glow: 0 0 25px rgba(255, 215, 0, 0.6);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--dark-night);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 10%, rgba(0, 183, 235, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 80% 90%, rgba(255, 193, 7, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 60%, rgba(34, 197, 94, 0.2) 0%, transparent 50%);
+    z-index: -1;
+    animation: northernLights 15s ease-in-out infinite;
+}
+
+@keyframes northernLights { 
+    0%, 100% { opacity: 0.8; transform: scale(1); } 
+    50% { opacity: 1; transform: scale(1.05); } 
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 2; }
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.header h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: var(--xmas-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+    animation: jingle 3s ease-in-out infinite;
+}
+
+@keyframes jingle { 
+    0%, 100% { transform: scale(1) rotate(-1deg); } 
+    50% { transform: scale(1.05) rotate(1deg); } 
+}
+
+.header p { 
+    font-size: 1.2rem; 
+    color: var(--snow-white); 
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.snow-container {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.snowflake {
+    position: absolute;
+    color: var(--snow-white);
+    font-size: 1.5rem;
+    animation: snowfall linear infinite;
+}
+
+@keyframes snowfall {
+    0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+.fir-trees {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    height: 120px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.fir-tree {
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(to top, #1a3c34, #2d5016);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    animation: sway 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.3));
+}
+
+.fir-tree:nth-child(1) { left: 5%; width: 50px; height: 100px; animation-delay: 0s; }
+.fir-tree:nth-child(2) { left: 15%; width: 60px; height: 120px; animation-delay: 1s; }
+.fir-tree:nth-child(3) { left: 25%; width: 45px; height: 90px; animation-delay: 2s; }
+.fir-tree:nth-child(4) { left: 85%; width: 55px; height: 110px; animation-delay: 0.5s; }
+.fir-tree:nth-child(5) { left: 92%; width: 35px; height: 70px; animation-delay: 1.5s; }
+
+@keyframes sway {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+}
+
+.decor-ball {
+    position: absolute;
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+    box-shadow: 0 0 20px rgba(255,255,255,0.3);
+}
+
+.decor-ball.red { background: var(--xmas-red); width: 25px; height: 25px; left: 15%; top: 20%; animation-delay: 0s; }
+.decor-ball.green { background: var(--xmas-green); width: 30px; height: 30px; left: 75%; top: 15%; animation-delay: 2s; }
+.decor-ball.gold { background: var(--xmas-gold); width: 20px; height: 20px; left: 85%; top: 35%; animation-delay: 1s; }
+
+.glass-card {
+    background: var(--glass);
+    backdrop-filter: blur(25px);
+    border: 2px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.6s;
+}
+
+.glass-card:hover::before { opacity: 1; }
+.glass-card:hover { 
+    transform: translateY(-12px) scale(1.01); 
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6); 
+}
+
+.input-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.input-section h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--snow-white);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 1px 5px rgba(0,0,0,0.3);
+}
+
+.input-field {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 16px 20px 16px 55px; /* 55px = space for icon */
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 16px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+    box-sizing: border-box;
+}
+
+.input-field input:focus {
+    outline: none;
+    border-color: #ffd700;
+    box-shadow: var(--glow);
+    background: rgba(255,255,255,0.2);
+}
+
+.input-field input::placeholder { 
+    color: #aaa; 
+    font-weight: 400;
+}
+
+.input-field i {
+    position: absolute;
+    left: 18px;
+    top: 38%;
+    transform: translateY(-55%);
+    color: #ffd700;
+    font-size: 1.2rem;
+    z-index: 2;
+}
+
+.input-field .hint {
+    font-size: 0.8rem;
+    color: #ddd;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.05);
+    padding: 8px 12px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    line-height: 1.3;
+
+    padding-left: 55px;
+}
+
+.calculate-btn {
+    background: var(--xmas-gold);
+    border: none;
+    padding: 20px 40px;
+    color: #000;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+    margin-top: 10px;
+}
+
+.calculate-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.7s, height 0.7s;
+}
+
+.calculate-btn:active::before {
+    width: 400px;
+    height: 400px;
+}
+
+.calculate-btn:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(255, 215, 0, 0.6);
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.result-card {
+    background: var(--glass);
+    backdrop-filter: blur(25px);
+    border: 2px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+    animation: slideUp 0.8s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.result-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: var(--xmas-gold);
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result-card h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--snow-white);
+}
+
+.result-card table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+}
+
+.result-card th {
+    background: rgba(255,215,0,0.2);
+    padding: 12px 10px;
+    text-align: left;
+    font-weight: 600;
+    color: #ffd700;
+    border-radius: 8px 0 0 8px;
+    white-space: nowrap;
+}
+
+.result-card td {
+    padding: 12px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    vertical-align: top;
+}
+
+.result-card tr:hover td {
+    background: rgba(255,255,255,0.08);
+}
+
+.result-card tr:last-child td {
+    border-bottom: none;
+}
+
+.strong {
+    font-weight: 700;
+    color: #ffd700 !important;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.metric {
+    background: rgba(255,215,0,0.2);
+    padding: 15px;
+    border-radius: 14px;
+    text-align: center;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(255,215,0,0.3);
+}
+
+.metric:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 15px 35px rgba(255,215,0,0.4);
+}
+
+.metric-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ffd700;
+    margin-bottom: 5px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+.metric-label {
+    font-size: 0.8rem;
+    color: var(--snow-white);
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.breakdown {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 12px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(255,215,0,0.3);
+}
+
+.breakdown-header {
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards;
+    padding: 6px 0;
+    font-size: 0.85rem;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.loading {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,15,26,0.98);
+    backdrop-filter: blur(15px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loading.active { display: flex; }
+.spinner {
+    width: 70px; height: 70px;
+    border: 4px solid rgba(255,255,255,0.1);
+    border-top: 4px solid #ffd700;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.loading h3 {
+    margin-top: 15px;
+    color: #ffd700;
+    font-size: 1.1rem;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+@media (max-width: 768px) {
+    .input-field input {
+        padding: 14px 16px 14px 55px;
+        font-size: 0.95rem;
+    }
+
+    .input-field .hint {
+        padding-left: 55px;
+        font-size: 0.75rem;
+    }
+}
+
+</style>
+</head>
+<body>
+<div class="snow-container" id="snow"></div>
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+    <h3>✨ Calculating Christmas Profits ✨</h3>
+</div>
+
+<div class="container">
+    <div class="decor-ball red"></div>
+    <div class="decor-ball green"></div>
+    <div class="decor-ball gold"></div>
+    
+    <div class="header">
+        <h1>🎅 Christmas Profit Share</h1>
+        <p>❄️ Smart parsing with holiday magic ❄️</p>
+    </div>
+
+    <div class="glass-card">
+        <div class="fir-trees">
+            <div class="fir-tree"></div>
+            <div class="fir-tree"></div>
+            <div class="fir-tree"></div>
+            <div class="fir-tree"></div>
+            <div class="fir-tree"></div>
+        </div>
+
+        <div class="input-section">
+            <div>
+                <h3><i class="fas fa-user-tie"></i> 🎁 Driver Info</h3>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input id="driver_name" placeholder="Santa Driver">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-dollar-sign"></i>
+                    <input id="driver_base" type="number" step="0.01" placeholder="Base $/hr">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-clock"></i>
+                    <input id="driver_hours" type="number" step="0.1" placeholder="Hours">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-percentage"></i>
+                    <input id="driver_share" type="number" placeholder="Profit Share %">
+                </div>
+            </div>
+            
+            <div>
+                <h3><i class="fas fa-user-friends"></i> 🦌 Navigator Info</h3>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input id="nav_name" placeholder="Elf Navigator">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-dollar-sign"></i>
+                    <input id="nav_base" type="number" step="0.01" placeholder="Base $/hr">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-clock"></i>
+                    <input id="nav_hours" type="number" step="0.1" placeholder="Hours">
+                </div>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <div>
+                <h3><i class="fas fa-chart-line"></i> 🎄 Revenue & Costs</h3>
+                <div class="input-field">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <input id="revenue" type="number" step="0.01" placeholder="Revenue $">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-trash"></i>
+                    <input id="today_dump" placeholder="Today's Dump (50 + 30 + 20)">
+                    <div class="hint"><i class="fas fa-lightbulb"></i> 50 + 30 + 20 = 100</div>
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-trash-restore"></i>
+                    <input id="tomorrow_dump" placeholder="Tomorrow's Dump (25 + 15)">
+                    <div class="hint"><i class="fas fa-lightbulb"></i> Use + for multiple entries</div>
+                </div>
+            </div>
+            <div>
+                <h3><i class="fas fa-coins"></i> 🎁 Tips & Gifts</h3>
+                <div class="input-field">
+                    <i class="fas fa-coins"></i>
+                    <input id="total_tips" placeholder="Total Tips (75 + 25 + 50)">
+                    <div class="hint"><i class="fas fa-lightbulb"></i> 75 + 25 + 50 = 150</div>
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-exchange-alt"></i>
+                    <input id="diversion" placeholder="Diversion (10 + 5 + 15)">
+                    <div class="hint"><i class="fas fa-lightbulb"></i> Auto-sums all entries</div>
+                </div>
+            </div>
+        </div>
+
+        <button class="calculate-btn" onclick="calculate()">
+            <i class="fas fa-magic"></i> 🎄 Calculate Christmas Magic
+        </button>
+    </div>
+
+    <div class="results-grid" id="results" style="display: none;">
+        <div class="result-card">
+            <h3><i class="fas fa-calculator"></i> 🎁 Profit Breakdown</h3>
+            <table id="profitTable"></table>
+            <div id="costBreakdown"></div>
+            <div class="metric-grid" id="profitMetrics"></div>
+        </div>
+        
+        <div class="result-card">
+            <h3><i class="fas fa-chart-pie"></i> 🏆 Wages & Rates</h3>
+            <table id="wageTable"></table>
+            <div class="metric-grid" id="wageMetrics"></div>
+        </div>
+        
+        <div class="result-card">
+            <h3><i class="fas fa-trophy"></i> 🎅 Final Totals</h3>
+            <table id="totalTable"></table>
+            <div class="metric-grid" id="totalMetrics"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+function parseSmartInput(input) {
+    if (!input || typeof input !== 'string') return { total: 0, items: [], raw: '' };
+    const cleanInput = input.replace(/\s+/g, '');
+    const numbers = cleanInput.split('+').map(num => {
+        const parsed = parseFloat(num);
+        return isNaN(parsed) ? 0 : parsed;
+    });
+    const total = numbers.reduce((sum, num) => sum + num, 0);
+    return { total, items: numbers, raw: input };
+}
+
+function createSnow() {
+    const snow = document.getElementById('snow');
+    for(let i = 0; i < 80; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.className = 'snowflake';
+        snowflake.innerHTML = '❄️';
+        snowflake.style.left = Math.random() * 100 + '%';
+        snowflake.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        snowflake.style.animationDelay = Math.random() * 5 + 's';
+        snowflake.style.opacity = 0.8 + Math.random() * 0.2;
+        snowflake.style.fontSize = (0.8 + Math.random() * 0.6) + 'rem';
+        snow.appendChild(snowflake);
+    }
+}
+
+function calculate() {
+    document.getElementById('loading').classList.add('active');
+    document.getElementById('results').style.display = 'none';
+    
+    setTimeout(() => {
+        performCalculation();
+        document.getElementById('loading').classList.remove('active');
+        document.getElementById('results').style.display = 'grid';
+    }, 1500);
+}
+
+function performCalculation() {
+    const dName = document.getElementById("driver_name").value || "Driver";
+    const dBase = parseFloat(document.getElementById("driver_base").value) || 0;
+    const dHours = parseFloat(document.getElementById("driver_hours").value) || 0;
+    const dShare = parseFloat(document.getElementById("driver_share").value) || 0;
+
+    const nName = document.getElementById("nav_name").value || "Navigator";
+    const nBase = parseFloat(document.getElementById("nav_base").value) || 0;
+    const nHours = parseFloat(document.getElementById("nav_hours").value) || 0;
+    const nShare = 100 - dShare;
+
+    const revenue = parseFloat(document.getElementById("revenue").value) || 0;
+    
+    const todayDumpData = parseSmartInput(document.getElementById("today_dump").value);
+    const tomorrowDumpData = parseSmartInput(document.getElementById("tomorrow_dump").value);
+    const totalTipsData = parseSmartInput(document.getElementById("total_tips").value);
+    const diversionData = parseSmartInput(document.getElementById("diversion").value);
+    
+    const todayDump = todayDumpData.total;
+    const tomorrowDump = tomorrowDumpData.total;
+    const totalTips = totalTipsData.total;
+    const diversion = diversionData.total;
+    
+    const dTotalBase = dBase * dHours;
+    const nTotalBase = nBase * nHours;
+    const totalBase = dTotalBase + nTotalBase;
+    const totalDump = todayDump + tomorrowDump;
+
+    const netRevenue = revenue - totalBase - totalDump + diversion;
+    const dailyPercent = revenue > 0 ? (netRevenue / revenue) * 100 : 0;
+    const afterMinus62 = dailyPercent - 62;
+    const afterTimes02 = afterMinus62 * 0.2;
+    const afterPlus2 = afterTimes02 + 2;
+    const profitSharePercent = afterPlus2;
+    const totalPS = (profitSharePercent / 100) * revenue;
+    const driverPS = totalPS * (dShare / 100);
+    const navPS = totalPS * (nShare / 100);
+
+    let dHourlyPreTip = dHours > 0 ? dBase + (driverPS / dHours) : 0;
+    let nHourlyPreTip = nHours > 0 ? nBase + (navPS / nHours) : 0;
+    if (dHourlyPreTip < 20) dHourlyPreTip = 20;
+    if (nHourlyPreTip < 18) nHourlyPreTip = 18;
+
+    const driverTips = totalTips / 2;
+    const navTips = totalTips / 2;
+
+    const dTipsHr = dHours > 0 ? driverTips / dHours : 0;
+    const nTipsHr = nHours > 0 ? navTips / nHours : 0;
+
+    const dTotal = (dHourlyPreTip * dHours) + driverTips;
+    const nTotal = (nHourlyPreTip * nHours) + navTips;
+
+    updateProfitTable({
+        revenue, totalBase, totalDump, diversion, netRevenue, dailyPercent, 
+        afterMinus62, afterTimes02, afterPlus2, profitSharePercent, totalPS, 
+        dName, dShare, nName, nShare, driverPS, navPS, todayDump: todayDump,
+        todayDumpData, tomorrowDumpData, totalTipsData, diversionData
+    });
+    updateWageTable({dName, dHours, dBase, dTotalBase, driverPS, nName, nHours, nBase, nTotalBase, navPS, dHourlyPreTip, nHourlyPreTip, totalBase});
+    updateTotalTable({dName, driverTips, dHours, dTipsHr, dHourlyPreTip, nName, navTips, nHours, nTipsHr, nHourlyPreTip, dTotal, nTotal});
+}
+
+function updateProfitTable(data) {
+    document.getElementById('profitTable').innerHTML = `
+        <tr><th>Gross Revenue</th><td>$${data.revenue.toFixed(2)}</td></tr>
+        <tr><th>Today Dumping</th><td>$${data.todayDumpData.total.toFixed(2)}</td></tr>
+        <tr><th>Tomorrow Dumping</th><td>$${data.tomorrowDumpData.total.toFixed(2)}</td></tr>
+        <tr><th class="strong">Total Dumping</th><td class="strong">$${data.totalDump.toFixed(2)}</td></tr>
+        <tr><th>Total Base Pay</th><td>$${data.totalBase.toFixed(2)}</td></tr>
+        <tr><th>Diversion Credit</th><td>+$${data.diversion.toFixed(2)}</td></tr>
+        <tr><th class="strong">Net Revenue</th><td class="strong">$${data.netRevenue.toFixed(2)}</td></tr>
+        <tr><th>Daily Margin</th><td>${data.dailyPercent.toFixed(2)}%</td></tr>
+        <tr><th class="strong">Profit Share %</th><td class="strong">${data.profitSharePercent.toFixed(2)}%</td></tr>
+        <tr><th>Total PS Amount</th><td>$${data.totalPS.toFixed(2)}</td></tr>
+        <tr><th>${data.dName}</th><td>$${data.driverPS.toFixed(2)}</td></tr>
+        <tr><th>${data.nName}</th><td>$${data.navPS.toFixed(2)}</td></tr>
+    `;
+    
+    let breakdownHtml = '';
+    if (data.todayDumpData.items.length > 1) {
+        breakdownHtml += `<div class="breakdown">
+            <div class="breakdown-header">🎁 Today's Dump (${data.todayDumpData.items.length} items)</div>`;
+        data.todayDumpData.items.slice(0,5).forEach((item, i) => {
+            breakdownHtml += `<div class="breakdown-item" style="animation-delay: ${i*0.1}s">Dump #${i+1}: <span>$${item.toFixed(2)}</span></div>`;
+        });
+        if (data.todayDumpData.items.length > 5) {
+            breakdownHtml += `<div class="breakdown-item" style="font-style: italic;">+ ${data.todayDumpData.items.length - 5} more...</div>`;
+        }
+        breakdownHtml += `</div>`;
+    }
+    
+    if (data.tomorrowDumpData.items.length > 1) {
+        breakdownHtml += `<div class="breakdown">
+            <div class="breakdown-header">🎄 Tomorrow's Dump (${data.tomorrowDumpData.items.length} items)</div>`;
+        data.tomorrowDumpData.items.slice(0,5).forEach((item, i) => {
+            breakdownHtml += `<div class="breakdown-item" style="animation-delay: ${i*0.1}s">Dump #${i+1}: <span>$${item.toFixed(2)}</span></div>`;
+        });
+        breakdownHtml += `</div>`;
+    }
+    
+    if (data.totalTipsData.items.length > 1) {
+        breakdownHtml += `<div class="breakdown">
+            <div class="breakdown-header">💰 Tips (${data.totalTipsData.items.length} tips)</div>`;
+        data.totalTipsData.items.slice(0,5).forEach((item, i) => {
+            breakdownHtml += `<div class="breakdown-item" style="animation-delay: ${i*0.1}s">Tip #${i+1}: <span>$${item.toFixed(2)}</span></div>`;
+        });
+        breakdownHtml += `</div>`;
+    }
+    
+    if (data.diversionData.items.length > 1) {
+        breakdownHtml += `<div class="breakdown">
+            <div class="breakdown-header">✨ Diversion (${data.diversionData.items.length} credits)</div>`;
+        data.diversionData.items.slice(0,5).forEach((item, i) => {
+            breakdownHtml += `<div class="breakdown-item" style="animation-delay: ${i*0.1}s">Credit #${i+1}: <span>+$${item.toFixed(2)}</span></div>`;
+        });
+        breakdownHtml += `</div>`;
+    }
+    
+    document.getElementById('costBreakdown').innerHTML = breakdownHtml;
+    
+    document.getElementById('profitMetrics').innerHTML = `
+        <div class="metric">
+            <div class="metric-value">$${data.totalPS.toFixed(0)}</div>
+            <div class="metric-label">Total PS</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">${data.profitSharePercent.toFixed(1)}%</div>
+            <div class="metric-label">Share Rate</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">$${data.netRevenue.toFixed(0)}</div>
+            <div class="metric-label">Net Revenue</div>
+        </div>
+    `;
+}
+
+function updateWageTable(data) {
+    document.getElementById('wageTable').innerHTML = `
+        <tr><th>${data.dName}</th><td>${data.dHours.toFixed(1)}h × $${data.dBase.toFixed(2)} = $${data.dTotalBase.toFixed(2)} + PS $${data.driverPS.toFixed(2)}</td></tr>
+        <tr><th>${data.nName}</th><td>${data.nHours.toFixed(1)}h × $${data.nBase.toFixed(2)} = $${data.nTotalBase.toFixed(2)} + PS $${data.navPS.toFixed(2)}</td></tr>
+        <tr><th class="strong">Total Base</th><td class="strong">$${data.totalBase.toFixed(2)}</td></tr>
+        <tr><th>${data.dName} Pre-tip/hr</th><td>$${data.dHourlyPreTip.toFixed(2)}</td></tr>
+        <tr><th>${data.nName} Pre-tip/hr</th><td>$${data.nHourlyPreTip.toFixed(2)}</td></tr>
+    `;
+    
+    document.getElementById('wageMetrics').innerHTML = `
+        <div class="metric">
+            <div class="metric-value">$${data.dHourlyPreTip.toFixed(1)}</div>
+            <div class="metric-label">${data.dName}/hr</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">$${data.nHourlyPreTip.toFixed(1)}</div>
+            <div class="metric-label">${data.nName}/hr</div>
+        </div>
+    `;
+}
+
+function updateTotalTable(data) {
+    document.getElementById('totalTable').innerHTML = `
+        <tr><th>${data.dName}</th><td>Tips $${data.driverTips.toFixed(2)} | ${data.dHours.toFixed(1)}h | Tips/hr $${data.dTipsHr.toFixed(2)} | Pre/hr $${data.dHourlyPreTip.toFixed(2)}</td></tr>
+        <tr><th>${data.nName}</th><td>Tips $${data.navTips.toFixed(2)} | ${data.nHours.toFixed(1)}h | Tips/hr $${data.nTipsHr.toFixed(2)} | Pre/hr $${data.nHourlyPreTip.toFixed(2)}</td></tr>
+        <tr><th class="strong">${data.dName} Total</th><td class="strong">$${data.dTotal.toFixed(2)}</td></tr>
+        <tr><th class="strong">${data.nName} Total</th><td class="strong">$${data.nTotal.toFixed(2)}</td></tr>
+    `;
+    
+    document.getElementById('totalMetrics').innerHTML = `
+        <div class="metric">
+            <div class="metric-value">$${(data.dHourlyPreTip + data.dTipsHr).toFixed(1)}/hr</div>
+            <div class="metric-label">${data.dName} Rate</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">$${(data.nHourlyPreTip + data.nTipsHr).toFixed(1)}/hr</div>
+            <div class="metric-label">${data.nName} Rate</div>
+        </div>
+    `;
+}
+
+createSnow();
+</script>
+</body>
+</html>
